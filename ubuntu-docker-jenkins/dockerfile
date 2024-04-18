@@ -1,0 +1,17 @@
+from ubuntu
+run apt update
+run apt install wget -y
+run wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+run echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+run apt update
+run apt install jenkins -y
+run apt install docker.io -y
+run apt install openjdk-11-jre -y
+run mkdir /code
+workdir /code
+copy . .
+cmd ["service", "jenkins", "start"]
+
