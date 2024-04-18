@@ -10,8 +10,10 @@ run apt update
 run apt install jenkins -y
 run apt install docker.io -y
 run apt install openjdk-11-jre -y
+// you can remove this
 run mkdir /code
 workdir /code
 copy . .
+// -----
 cmd ["service", "jenkins", "start"]
 
