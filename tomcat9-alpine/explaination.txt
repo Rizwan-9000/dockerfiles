@@ -1,0 +1,36 @@
+# taking alpine as a base image
+FROM alpine
+
+# updating and installing wget
+RUN apk update && apk add wget
+
+# adding a new user named tomcat
+RUN adduser tomcat -D --shell /bin/sh
+
+# selecting the working directory on which tomcat will be downloaded and all the other work will be done
+WORKDIR /opt 
+
+# installing openjdk8
+RUN apk add openjdk8 
+
+# downloading the tocmat version 9.0.82, renaming the downloaded file tomcat.tar.gz with -O option AND extracting it
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.82/bin/apache-tomcat-9.0.82.tar.gz -O tomcat.tar.gz && tar -xf tomcat.tar.gz
+
+# after extracting, renaming the folder to tomcat
+RUN mv apache-tomcat-* tomcat
+
+# setting the enviornment (this is required to run catalina.sh, so we have to add these variables on the PATH)
+ENV CATALINA_HOME=/opt/tomcat
+ENV PATH=$CATALINA_HOME/bin:$PATH
+
+# giving tomcat user the ownership of the /opt directory
+RUN chown tomcat:tomcat -R /opt
+
+# expsoing the port
+EXPOSE 8080
+
+# changing the user to tomcat
+USER tomcat
+
+# running the tomcat server with catalina.sh run
+CMD ["catalina.sh" , "run"]

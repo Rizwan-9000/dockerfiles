@@ -1,0 +1,13 @@
+FROM alpine
+RUN apk update && apk add wget
+RUN adduser tomcat -D --shell /bin/sh
+WORKDIR /opt
+RUN apk add openjdk8
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.82/bin/apache-tomcat-9.0.82.tar.gz -O tomcat.tar.gz && tar -xf tomcat.tar.gz
+RUN mv apache-tomcat-* tomcat
+ENV CATALINA_HOME=/opt/tomcat
+ENV PATH=$CATALINA_HOME/bin:$PATH
+RUN chown tomcat:tomcat -R /opt
+EXPOSE 8080
+USER tomcat
+CMD ["catalina.sh" , "run"]
