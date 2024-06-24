@@ -1,2 +1,1 @@
 export PATH=/where_the_path/tomcat/bin:$PATH (for catalina.sh run)
-rizwan9000/tomcat:9.0.82-openjdk-8-rizwan
